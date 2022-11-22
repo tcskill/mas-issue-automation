@@ -24,10 +24,10 @@ jobs:
       - name: Check Notification
         id: check-notif
         run: |
-          echo $data.json
+
           types=($(jq -r '.[].subject.type' data.json))
           repos=($(jq -r '.[].repository.full_name' data.json))
-          titles($(jq -r '.[].subject.title' data.json))
+          titles=($(jq -r '.[].subject.title' data.json))
           threadids=($(jq -r '.[].id' data.json))
           declare -i count=0
           for i in "${types[@]}"
