@@ -32,24 +32,27 @@ jobs:
             #          threadids=($(jq -r '.[].id' data.json))
             #          
             #          declare -i count=0
+            # #            for (( i=0; i<$count; i++ )) do
 
-            count=`jq '. | length' data.json`
+            notify_length=`jq '. | length' data.json`
 
-            for (( i=0; i<$count; i++ )) do
+            count=0
+            until [[ $count -eq $notify_length ]]; do
                 
-                type=($(jq -r '.[$i].subject.type' data.json))
-                echo "type: $type"
+              type=($(jq -r '.[$count].subject.type' data.json))
+              echo "type: $type"
 
-                if [[ $type == "Release" ]]; then
-                  repo=($(jq -r '.[$i].repository.full_name' data.json))
-                  title=($(jq -r '.[$i].subject.title' data.json))
-                  threadid=($(jq -r '.[$i].id' data.json))
-                  echo "repo: $repo"
-                  echo "title: $title"
-                  echo "threadid: $threadid"
+              if [[ $type == "Release" ]]; then
+                repo=($(jq -r '.[$count].repository.full_name' data.json))
+                title=($(jq -r '.[$count].subject.title' data.json))
+                threadid=($(jq -r '.[$count].id' data.json))
+                echo "repo: $repo"
+                echo "title: $title"
+                echo "threadid: $threadid"
 
 
-                fi
+              fi
+              count=$((count + 1))
 
             done
 
