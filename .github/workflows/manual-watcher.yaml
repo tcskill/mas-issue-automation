@@ -40,13 +40,13 @@ jobs:
             until [[ $count -eq $notify_length ]]; do
                 
               echo $count
-              type=($(jq --arg c $count -r '.[$c | tonumber].subject.type' data.json))
+              type=($(jq --arg c $count -r '.[$c].subject.type' data.json))
               echo "type: $type"
 
               if [[ $type == "Release" ]]; then
-                repo=($(jq --arg c $count -r '.[$c | tonumber].repository.full_name' data.json))
-                title=($(jq --arg c $count -r '.[$c | tonumber].subject.title' data.json))
-                threadid=($(jq --arg c $count -r '.[$c | tonumber].id' data.json))
+                repo=($(jq --arg c $count -r '.[$c].repository.full_name' data.json))
+                title=($(jq --arg c $count -r '.[$c].subject.title' data.json))
+                threadid=($(jq --arg c $count -r '.[$c].id' data.json))
                 echo "repo: $repo"
                 echo "title: $title"
                 echo "threadid: $threadid"
