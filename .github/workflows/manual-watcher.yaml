@@ -33,7 +33,7 @@ jobs:
             #          
             #          declare -i count=0
 
-            count=`jq '.[] | length' data.json`
+            count=`jq '. | length' data.json`
 
             for (( i=0; i<$count; i++ )) do
                 
