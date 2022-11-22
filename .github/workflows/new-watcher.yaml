@@ -26,12 +26,18 @@ jobs:
         shell: bash
         run: |
 
-          notifyList=($(cat data.json | jq -c '.'))
+          # exploit the JMESpath length() function to get a count of list elements to iterate
+          COUNT=$(`cat data.json | jp "length( [*] )"`)
 
-          for listing in ${notifyList[@]}; do
+          # The `seq` command produces the sequence `0 1 2` for our indexes
+          # The $(( )) operator in bash produces an arithmetic result ($COUNT minus one)
+          for i in `seq 0 $((COUNT - 1))` ; do
 
-            type=$(jq '.subject.type' <<<"$listing")
-            echo $type
+              # The list elements in JMESpath are zero-indexed
+              echo $1
+              type=($(cat data.json | jp "[$i].subect.type"))
+              echo $type
+
+              # Add or replace whatever operation you like here.
 
           done
-
