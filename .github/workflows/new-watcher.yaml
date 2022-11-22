@@ -1,0 +1,39 @@
+
+name: Automate Issue Creation
+on: [workflow_dispatch]
+#  schedule:
+#    - cron: '0 7 * * *'
+
+jobs:
+  check_release:
+    name: Check For Release
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+    
+    #get notifications data (defaults to unread notifications only)
+      - name: Get Notification Data
+        run: |
+          curl -H "Accept: application/vnd.github+json" \
+          -H "Authorization: Bearer ${{ secrets.NOTIFICATION_CHECKER }}" \
+          https://api.github.com/notifications -o data.json
+          
+    #check for release within target repository
+    #if a release is found, create and issue and mark notification as read
+
+      - name: Check Notification
+        id: notif-check
+        shell: bash
+        run: |
+
+          notifyList=$(cat data.json | jq -c '.'))
+          IFS=$'\n' # Read till newline
+
+          for listing in ${notifyList[@]}; do
+
+            type=$(jq '.subject.type' <<<"$listing")
+            echo $type
+
+          done
+
+          unset IFS

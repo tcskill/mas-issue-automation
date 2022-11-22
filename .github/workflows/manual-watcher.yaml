@@ -41,16 +41,10 @@ jobs:
            # for (( i=0; i<$length; i++ )); do
             #until [[ $count -eq $length ]]; do
 
-          notifyList=($(cat data.json | jq -c '.'))
-          IFS=$'\n' # Read till newline
 
-          for listing in ${notifyList[@]}; do
+         # COUNT=`cat data.json | jp "length( [*] )"`
 
-            type=$(jq '.subject.type' <<<"$listing")
 
-          done
-
-          unset IFS
 
                 
             #  echo $i
