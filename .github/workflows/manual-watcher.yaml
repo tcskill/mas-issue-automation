@@ -37,15 +37,16 @@ jobs:
             notify_length=`jq '. | length' data.json`
 
             count=0
-            until [[ $count -eq $notify_length ]]; do
+            until [[ $(count) -eq $(notify_length) ]]; do
                 
-              type=($(jq -r '.[$count].subject.type' data.json))
+              echo $(count)  
+              type=($(jq -r '.[$(count)].subject.type' data.json))
               echo "type: $type"
 
               if [[ $type == "Release" ]]; then
-                repo=($(jq -r '.[$count].repository.full_name' data.json))
-                title=($(jq -r '.[$count].subject.title' data.json))
-                threadid=($(jq -r '.[$count].id' data.json))
+                repo=($(jq -r '.[$(count)].repository.full_name' data.json))
+                title=($(jq -r '.[$(count)].subject.title' data.json))
+                threadid=($(jq -r '.[$(count)].id' data.json))
                 echo "repo: $repo"
                 echo "title: $title"
                 echo "threadid: $threadid"
