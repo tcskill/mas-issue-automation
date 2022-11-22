@@ -1,5 +1,5 @@
 
-name: Automate Issue Creation from Notification
+name: Automate Issue Creation
 on: [workflow_dispatch]
 #  schedule:
 #    - cron: '0 7 * * *'
@@ -24,6 +24,7 @@ jobs:
       - name: Check Notification
         id: check-notif
         run: |
+          echo $data.json
           types=($(jq -r '.[].subject.type' data.json))
           repos=($(jq -r '.[].repository.full_name' data.json))
           titles($(jq -r '.[].subject.title' data.json))
