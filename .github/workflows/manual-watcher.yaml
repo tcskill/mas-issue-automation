@@ -1,0 +1,62 @@
+
+name: Automate Issue Creation from Notification
+on: [workflow_dispatch]
+#  schedule:
+#    - cron: '0 7 * * *'
+
+jobs:
+  check_release:
+    name: Check For Release
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+    
+    #get notifications data (defaults to unread notifications only)
+      - name: Get Notification Data
+        run: |
+          curl -H "Accept: application/vnd.github+json" \
+          -H "Authorization: Bearer ${{ secrets.NOTIFICATION_CHECKER }}" \
+          https://api.github.com/notifications -o data.json
+          
+    #check for release within target repository
+    #if a release is found, create and issue and mark notification as read
+
+      - name: Check Notification
+        id: check-notif
+        run: |
+          types=($(jq -r '.[].subject.type' data.json))
+          repos=($(jq -r '.[].repository.full_name' data.json))
+          titles($(jq -r '.[].subject.title' data.json))
+          threadids=($(jq -r '.[].id' data.json))
+          declare -i count=0
+          for i in "${types[@]}"
+            do
+              if [[ "$i" == *"Release"* ]] && [[ "${repos[$count]}" == *"ibm-mas/ansible-devops"* ]]
+              then
+                echo "relBool=true" >> $GITHUB_ENV
+                echo "repo=${repos[$count]}" >> $GITHUB_ENV
+                echo "title=${titles[$count]}" >> $GITHUB_ENV
+                echo "threadID=${threadids[$count]}" >> $GITHUB_ENV
+                echo "${threadids[$count]}"
+              
+              curl -X "POST" "https://api.github.com/repos/tcskill/mas-issue-automation/issues" \
+              -H "Accept: application/vnd.github+json" \
+              -H "Authorization: Bearer ${{ secrets.NOTIFICATION_CHECKER }}" \
+              -d $'{
+                "title": "New MAS Ansible Release ${{ env.title }}",
+                "body": "New Release ${{ env.title }} created in mas-auto repository ",
+                "labels": [
+                  "enhancement",
+                  "new release"
+                  ]
+                }'
+
+              curl \
+              -X PATCH \
+              -H "Accept: application/vnd.github+json" \
+              -H "Authorization: Bearer ${{ secrets.NOTIFICATION_CHECKER }}" \
+              https://api.github.com/notifications/threads/${{ env.threadID }}
+
+              fi
+              count+=1
+            done
