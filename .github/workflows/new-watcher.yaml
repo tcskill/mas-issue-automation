@@ -1,5 +1,5 @@
 
-name: Automate Issue Creation
+name: Automate Issue Creation2
 on: [workflow_dispatch]
 #  schedule:
 #    - cron: '0 7 * * *'
