@@ -43,16 +43,16 @@ jobs:
                 
               echo $count
               #type=($(jq --arg c $count -r '.[$c].subject.type' data.json))
-              type=($(jq -r '.['$i'].subject.type' data.json))
+              type=($(jq -r '.["$i"].subject.type' data.json))
               echo "type: $type"
 
               if [[ $type == "Release" ]]; then
                 #repo=($(jq --arg c $count -r '.[$c].repository.full_name' data.json))
-                repo=($(jq -r '.['$c'].repository.full_name' data.json))
+                repo=($(jq -r '.["$c"].repository.full_name' data.json))
                 #title=($(jq --arg c $count -r '.[$c].subject.title' data.json))
-                title=($(jq -r '.['$c'].subject.title' data.json))
+                title=($(jq -r '.["$c"].subject.title' data.json))
                 #threadid=($(jq --arg c $count -r '.[$c].id' data.json))
-                threadid=($(jq -r '.['$c'].id' data.json))
+                threadid=($(jq -r '.["$c"].id' data.json))
                 echo "repo: $repo"
                 echo "title: $title"
                 echo "threadid: $threadid"
