@@ -27,7 +27,6 @@ jobs:
         run: |
 
           notifyList=($(cat data.json | jq -c '.'))
-          IFS=$'\n' # Read till newline
 
           for listing in ${notifyList[@]}; do
 
@@ -36,4 +35,3 @@ jobs:
 
           done
 
-          unset IFS
