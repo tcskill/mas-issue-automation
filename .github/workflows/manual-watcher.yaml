@@ -35,18 +35,18 @@ jobs:
 
             count=`jq '.[] | length' data.json`
 
-            for ((i=0; i<$count; i++)); do
+            for (( i=0; i<$count; i++ )) do
                 
                 type=($(jq -r '.[$i].subject.type' data.json))
-                echo "type: "+$type
+                echo "type: $type"
 
                 if [[ $type == "Release" ]]; then
                   repo=($(jq -r '.[$i].repository.full_name' data.json))
                   title=($(jq -r '.[$i].subject.title' data.json))
                   threadid=($(jq -r '.[$i].id' data.json))
-                  echo "repo: "+$repo
-                  echo "title: "+$title
-                  echo "threadid: "+$threadid
+                  echo "repo: $repo"
+                  echo "title: $title"
+                  echo "threadid: $threadid"
 
 
                 fi
