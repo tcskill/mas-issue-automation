@@ -17,6 +17,4 @@ jobs:
       - name: Check Notifications
         id: notif-check
         #shell: bash
-        run: |
-          # make file runnable, might not be necessary
-          chmod +x "./.github/workflows/scripts/createIssues.sh"
+        run: ./.github/workflows/scripts/createIssues.sh
