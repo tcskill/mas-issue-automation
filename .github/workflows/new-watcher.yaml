@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions: write-all
     steps:
+      - uses: actions/checkout@v2
   
     #check for release within target repository
     #if a release is found, create and issue and mark notification as read
@@ -17,7 +18,4 @@ jobs:
       - name: Check Notifications
         id: notif-check
         #shell: bash
-        run: |
-          pwd
-          ls -al
-          bash ${GITHUB_WORKSPACE}/.github/workflows/scripts/create-issues.sh
+        run: bash ${GITHUB_WORKSPACE}/.github/workflows/scripts/create-issues.sh
