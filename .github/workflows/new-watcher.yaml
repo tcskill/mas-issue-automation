@@ -14,9 +14,9 @@ jobs:
     #get notifications data (defaults to unread notifications only)
       - name: Get Notification Data
         run: |
-          curl -H "Accept: application/vnd.github+json" \
+          resp=$(curl -H "Accept: application/vnd.github+json" \
           -H "Authorization: Bearer ${{ secrets.NOTIFICATION_CHECKER }}" \
-          https://api.github.com/notifications -o data.json
+          https://api.github.com/notifications)
           
     #check for release within target repository
     #if a release is found, create and issue and mark notification as read
@@ -26,13 +26,16 @@ jobs:
         shell: bash
         run: |
 
-         notifyList=($(cat data.json | jq -c '.[]'))
-         IFS=$' ' # Read till newline
+         for row in $(echo "$resp" | jq -c '. | map(.) | .[]'); do
+            _jq() {
+            echo ${row} | jq -r "${1}"
+            }
+          echo $(_jq '.subject.type') "=" $(_jq '.repository.full_name')
+         done
 
-         for listing in ${notifyList[@]}; do
-
-           type=$(jq '.subject.type' <<<"$listing")
-           echo $type
-
-          done
-          unset IFS
+#         for (( i=0; i<$length; i++ )); do
+#            type=$(echo "$resp" | jq '.[$i].subject.type')
+#            echo $i
+#            echo $type
+#
+#         done         
