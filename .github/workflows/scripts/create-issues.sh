@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 resp=$(curl -H "Accept: application/vnd.github+json" \
--H "Authorization: Bearer ${{ secrets.NOTIFICATION_CHECKER }} " \
+-H "Authorization: Bearer ${NOTIFICATION_CHECKER} " \
 https://api.github.com/notifications)
 
 
@@ -30,12 +30,12 @@ EOF
 
         curl -X "POST" "https://api.github.com/repos/tcskill/mas-issue-automation/issues" \
         -H "Accept: application/vnd.github+json" \
-        -H "Authorization: Bearer ${{ secrets.NOTIFICATION_CHECKER }}" \
+        -H "Authorization: Bearer ${NOTIFICATION_CHECKER}" \
         -d "$(_issue_data)"
 
         curl -X PATCH \
         -H "Accept: application/vnd.github+json" \
-        -H "Authorization: Bearer ${{ secrets.NOTIFICATION_CHECKER }}" \
+        -H "Authorization: Bearer ${NOTIFICATION_CHECKER}" \
         https://api.github.com/notifications/threads/${threadid}
 
     fi
