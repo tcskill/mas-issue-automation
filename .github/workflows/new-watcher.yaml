@@ -23,7 +23,7 @@ jobs:
 
       - name: Check Notification
         id: notif-check
-        shell: bash
+        #shell: bash
         run: |
 
           for row in $(echo "${resp}" | jq -r '.[] | @base64'); do
