@@ -27,10 +27,11 @@ jobs:
         run: |
 
          for row in $(echo "$resp" | jq -c '. | map(.) | .[]'); do
+            echo "new row: ${row}"
             _jq() {
             echo ${row} | jq -r "${1}"
             }
-          echo $(_jq '.subject.type') "=" $(_jq '.repository.full_name')
+          echo $(_jq '.[].subject.type') "=" $(_jq '.[].repository.full_name')
          done
 
 #         for (( i=0; i<$length; i++ )); do
