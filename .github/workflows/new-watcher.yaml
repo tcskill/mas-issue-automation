@@ -17,4 +17,4 @@ jobs:
       - name: Check Notifications
         id: notif-check
         #shell: bash
-        run: ./.github/workflows/scripts/createIssues.sh
+        run: .github/workflows/scripts/createIssues.sh
