@@ -19,4 +19,4 @@ jobs:
         #shell: bash
         run: |
           # make file runnable, might not be necessary
-          chmod +x "${GITHUB_WORKSPACE}/.github/scipts/createIssues.sh"
+          chmod +x "${GITHUB_WORKSPACE}/.github/scripts/createIssues.sh"
