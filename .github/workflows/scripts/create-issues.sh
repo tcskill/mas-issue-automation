@@ -6,14 +6,14 @@ resp=$(curl -H "Accept: application/vnd.github+json" \
 https://api.github.com/notifications)
 
 # for each notification check if it's a release notification for the repo we care about
-for row in $(echo "${resp}" | jq -sRr '.[] | @base64'); do
-    type=$(echo ${row} | base64 --decode | jq -sRr '.subject.type' )
-    repo=$(echo ${row} | base64 --decode | jq -sRr '.repository.full_name' )
+for row in $(echo "${resp}" | jq '.[] | @base64'); do
+    type=$(echo ${row} | base64 --decode | jq '.subject.type' )
+    repo=$(echo ${row} | base64 --decode | jq '.repository.full_name' )
 
     if [[ $type == "Release" ]] && [[ $repo == "ibm-mas/ansible-devops" ]]; then
 
-        title=$(echo ${row} | base64 --decode | jq -sRr '.subject.title' )
-        threadid=$(echo ${row} | base64 --decode | jq -sRr '.id' )
+        title=$(echo ${row} | base64 --decode | jq '.subject.title' )
+        threadid=$(echo ${row} | base64 --decode | jq '.id' )
 
 # for release notificaitons, build the data for the issue to open
         _issue_data()
