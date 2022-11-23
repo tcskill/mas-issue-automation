@@ -4,6 +4,7 @@ resp=$(curl -H "Accept: application/vnd.github+json" \
 -H "Authorization: Bearer ${NOTIFICATION_CHECKER} " \
 https://api.github.com/notifications)
 
+jq --version
 
 for row in $(echo "${resp}" | jq -r '.[] | @base64'); do
     type=$(echo ${row} | base64 --decode | jq -r '.subject.type' )
