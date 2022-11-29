@@ -1,5 +1,6 @@
 name: Automate Issue Creation
 on: [workflow_dispatch]
+#  uncomment below if desire is to run this automatically at certain intervals
 #  schedule:
 #    - cron: '0 7 * * *'
 
@@ -16,6 +17,6 @@ jobs:
 
       - name: Check Notifications
         id: notif-check
-        run: bash ${GITHUB_WORKSPACE}/.github/workflows/scripts/check-notifications.sh
+        run: bash ${GITHUB_WORKSPACE}/.github/workflows/scripts/check-notifications.sh "ibm-mas/ansible-devops"
         env:
           NOTIFICATION_TOKEN: ${{ secrets.NOTIFICATION_TOKEN }}

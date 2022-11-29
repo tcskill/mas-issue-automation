@@ -6,10 +6,15 @@
 ## a specified repository.  That notification is then marked as read
 ## so it isn't processed again.
 ##
-## Requirement: 
+## Requires: 
 ##   - an access token is required that has access to read notifications
 ##     and access to create an issue.
+##   - the account the access token belongs to, must subscribe to notifications 
+##     from the repository it is watching
 ## 
+
+# repo string in format: "{org}/{repo}" to check for releases
+REPO_NAME="$1"
 
 # get the notifications for the repo
 resp=$(curl -H "Accept: application/vnd.github+json" \
@@ -21,7 +26,7 @@ for row in $(echo "${resp}" | jq -r '.[] | @base64'); do
     type=$(echo ${row} | base64 -d | jq -r '.subject.type' )
     repo=$(echo ${row} | base64 -d | jq -r '.repository.full_name' )
 
-    if [[ $type == "Release" ]] && [[ $repo == "ibm-mas/ansible-devops" ]]; then
+    if [[ $type == "Release" ]] && [[ $repo == ${REPO_NAME} ]]; then
 
         title=$(echo ${row} | base64 -d | jq -r '.subject.title' )
         threadid=$(echo ${row} | base64 -d | jq -r '.id' )
