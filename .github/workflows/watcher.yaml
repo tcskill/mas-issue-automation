@@ -1,4 +1,3 @@
-
 name: Automate Issue Creation
 on: [workflow_dispatch]
 #  schedule:
@@ -11,16 +10,12 @@ jobs:
     permissions: write-all
     steps:
       - uses: actions/checkout@v2
-      
-#      - name: Setup tmate session
-#        uses: mxschmitt/action-tmate@v3
-#        timeout-minutes: 15
   
     #check for release within target repository
     #if a release is found, create and issue and mark notification as read
 
       - name: Check Notifications
         id: notif-check
-        run: bash ${GITHUB_WORKSPACE}/.github/workflows/scripts/create-issues.sh
+        run: bash ${GITHUB_WORKSPACE}/.github/workflows/scripts/check-notifications.sh
         env:
-          NOTIFICATION_CHECKER: ${{ secrets.NOTIFICATION_CHECKER }}
+          NOTIFICATION_TOKEN: ${{ secrets.NOTIFICATION_TOKEN }}

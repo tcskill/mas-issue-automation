@@ -1,12 +1,20 @@
 #!/usr/bin/env bash
 
+##
+## This checks unread notifications for a release of a repository.
+## If a release is found for that repo, then an issue is opened in 
+## a specified repository.  That notification is then marked as read
+## so it isn't processed again.
+##
+## Requirement: 
+##   - an access token is required that has access to read notifications
+##     and access to create an issue.
+## 
+
 # get the notifications for the repo
 resp=$(curl -H "Accept: application/vnd.github+json" \
--H "Authorization: Bearer ${NOTIFICATION_CHECKER} " \
+-H "Authorization: Bearer ${NOTIFICATION_TOKEN} " \
 https://api.github.com/notifications)
-
-echo "resp="
-echo "{$resp}"
 
 # for each notification check if it's a release notification for the repo we care about
 for row in $(echo "${resp}" | jq -r '.[] | @base64'); do
@@ -36,14 +44,13 @@ EOF
 # create the issue and mark notification as read
         curl -X "POST" "https://api.github.com/repos/tcskill/mas-issue-automation/issues" \
         -H "Accept: application/vnd.github+json" \
-        -H "Authorization: Bearer ${NOTIFICATION_CHECKER}" \
+        -H "Authorization: Bearer ${NOTIFICATION_TOKEN}" \
         -d "$(_issue_data)"
 
         curl -X PATCH \
         -H "Accept: application/vnd.github+json" \
-        -H "Authorization: Bearer ${NOTIFICATION_CHECKER}" \
+        -H "Authorization: Bearer ${NOTIFICATION_TOKEN}" \
         https://api.github.com/notifications/threads/${threadid}
 
     fi
-    
 done
