@@ -2,7 +2,7 @@ name: Check Notifications
 on: [workflow_dispatch]
 #  uncomment below if desire is to run this automatically at certain intervals
 #  schedule:
-#    - cron: '0 7 * * *'
+#    - cron: '0 4 * * *'
 
 jobs:
   check_release:
