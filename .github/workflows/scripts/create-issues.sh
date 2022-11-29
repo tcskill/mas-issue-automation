@@ -5,6 +5,9 @@ resp=$(curl -H "Accept: application/vnd.github+json" \
 -H "Authorization: Bearer ${NOTIFICATION_CHECKER} " \
 https://api.github.com/notifications)
 
+echo "resp="
+echo "{$resp}"
+
 # for each notification check if it's a release notification for the repo we care about
 for row in $(echo "${resp}" | jq -r '.[] | @base64'); do
     type=$(echo ${row} | base64 -d | jq -r '.subject.type' )

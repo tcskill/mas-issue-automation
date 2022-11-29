@@ -12,9 +12,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-        timeout-minutes: 15
+#      - name: Setup tmate session
+#        uses: mxschmitt/action-tmate@v3
+#        timeout-minutes: 15
   
     #check for release within target repository
     #if a release is found, create and issue and mark notification as read
