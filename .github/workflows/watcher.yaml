@@ -1,4 +1,4 @@
-name: Automate Issue Creation
+name: Check Notifications
 on: [workflow_dispatch]
 #  uncomment below if desire is to run this automatically at certain intervals
 #  schedule:
